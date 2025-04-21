@@ -30,7 +30,17 @@ spring:
           predicates:
             - Path=/productos/**, /ventas/**
 
-        - id: ms-ventas-service
-          uri: lb://ms-ventas-service
+        - id: ms-estudiante-service
+          uri: lb://ms-estudiante-service
           predicates:
-            - Path=/proveedores/**
+            - Path=/estudiantes/**
+
+        - id: ms-curso-service
+          uri: lb://ms-curso-service
+          predicates:
+            - Path=/cursos/**
+
+        - id: ms-matricula-service
+          uri: lb://ms-matricula-service
+          predicates:
+            - Path=/matriculas/**

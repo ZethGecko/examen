@@ -1,0 +1,8 @@
+#spring.application.name=ms-matricula-service
+spring:
+  application:
+    name: ms-matricula-service
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://root:password@localhost:7070
