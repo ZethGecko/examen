@@ -7,7 +7,7 @@ spring:
 
   # CONEXIÓN A BASE DE DATOS
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgreDB
+    url: jdbc:postgresql://localhost:5432/postgredb
     username: postgres
     password: ""
     driver-class-name: org.postgresql.Driver
