@@ -28,8 +28,7 @@ spring:
         - id: ms-microservicio2
           uri: lb://ms-microservicio2
           predicates:
-            - Path=/productos/**
-            - Path=/ventas/**
+            - Path=/productos/**, /ventas/**
 
         - id: ms-ventas-service
           uri: lb://ms-ventas-service
