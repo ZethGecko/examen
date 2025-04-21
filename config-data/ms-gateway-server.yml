@@ -20,13 +20,13 @@ spring:
           enable: true
 #          enrutar los microservicios
       routes:
-        - id: ms-historial-service
-          uri: lb://ms-historial-service
+        - id: ms-microservicio1
+          uri: lb://ms-microservicio1
           predicates:
-            - Path=/usuarios/**
+            - Path=/clientes/**
 
-        - id: ms-pedido-service
-          uri: lb://ms-pedido-service
+        - id: ms-microservicio2
+          uri: lb://ms-microservicio2
           predicates:
             - Path=/ofertas/**
 
