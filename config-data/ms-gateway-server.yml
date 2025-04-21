@@ -1,0 +1,36 @@
+server:
+  port: 8085
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8090/eureka
+      #defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
+  instance:
+    hostname: localhost
+    #instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+spring:
+  cloud:
+    gateway:
+
+
+      discovery:
+        locator:
+          enable: true
+#          enrutar los microservicios
+      routes:
+        - id: ms-historial-service
+          uri: lb://ms-historial-service
+          predicates:
+            - Path=/usuarios/**
+
+        - id: ms-pedido-service
+          uri: lb://ms-pedido-service
+          predicates:
+            - Path=/ofertas/**
+
+        - id: ms-ventas-service
+          uri: lb://ms-ventas-service
+          predicates:
+            - Path=/proveedores/**
