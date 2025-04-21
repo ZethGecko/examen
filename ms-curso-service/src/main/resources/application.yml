@@ -1,7 +1,7 @@
 #spring.application.name=ms-curso-service
 spring:
   application:
-    name: ms-estudiante-service
+    name: ms-curso-service
   profiles:
     active: development
   config:
