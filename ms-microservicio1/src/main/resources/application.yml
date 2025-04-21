@@ -1,0 +1,8 @@
+#spring.application.name=ms-microservicio1
+spring:
+  application:
+    name: ms-microservicio1
+  profiles:
+    active: development
+  config:
+    import: optional:configserver:http://root:password@localhost:7070

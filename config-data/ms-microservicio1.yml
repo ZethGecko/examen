@@ -7,7 +7,7 @@ spring:
 
   # CONEXION A BASE DE DATOS
   datasource:
-    url: jdbc:mysql://localhost:3306/ms_historial
+    url: jdbc:mysql://localhost:3306/mysqldb
     username: root
     password: ""
     driver-class-name: com.mysql.cj.jdbc.Driver
