@@ -14,7 +14,7 @@ public class Producto {
     private Integer id;
     private String nombre;
     private String tipo;
-    private String presio;
+    private String precio;
     private LocalDateTime fechaCreacion;
 
     public Integer getId() {
@@ -41,12 +41,12 @@ public class Producto {
         this.tipo = tipo;
     }
 
-    public String getPresio() {
-        return presio;
+    public String getPrecio() {
+        return precio;
     }
 
-    public void setPresio(String presio) {
-        this.presio = presio;
+    public void setPrecio(String precio) {
+        this.precio = precio;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -54,6 +54,14 @@ public class Producto {
     }
 
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Producto(Integer id, String nombre, String tipo, String precio, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.precio = precio;
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -66,7 +74,7 @@ public class Producto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", tipo='" + tipo + '\'' +
-                ", presio='" + presio + '\'' +
+                ", precio='" + precio + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
