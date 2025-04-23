@@ -1,5 +1,6 @@
 package com.example.msmatriculaservice.service.impl;
 
+import com.example.msmatriculaservice.dto.MatriculaDetalle;
 import com.example.msmatriculaservice.entity.Matricula;
 import com.example.msmatriculaservice.repository.MatriculaRepository;
 import com.example.msmatriculaservice.service.MatriculaService;
@@ -58,6 +59,28 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public void eliminarPorId(Integer id) {
         matriculaRepository.deleteById(id);
+    }
+
+    @Override
+    public MatriculaDetalle obtenerDetalleMatriculaPorId(Integer matriculaId) {
+        Matricula matricula = matriculaRepository.findById(matriculaId)
+                .orElseThrow(() -> new RuntimeException("No se encontró matrícula con ID: " + matriculaId));
+
+        // Obtener el nombre del curso desde el microservicio de cursos
+        String cursoNombre = cursoService.obtenerNombreCursoPorId(matricula.getCursoId());
+
+        // Obtener el nombre del estudiante desde el microservicio de estudiantes
+        String alumnoNombre = estudianteService.obtenerNombreEstudiantePorId(matricula.getAlumnoId());
+
+        // Crear y devolver el DTO con los datos enriquecidos
+        MatriculaDetalle detalle = new MatriculaDetalle();
+        detalle.setId(matricula.getId());
+        detalle.setEstado(matricula.getEstado());
+        detalle.setCursoNombre(cursoNombre);
+        detalle.setAlumnoNombre(alumnoNombre);
+        detalle.setCiclo(matricula.getCiclo());
+        detalle.setFechaMatricula(matricula.getFechaMatricula());
+        return detalle;
     }
 
 }

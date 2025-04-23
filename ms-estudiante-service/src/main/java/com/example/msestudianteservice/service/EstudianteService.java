@@ -11,4 +11,6 @@ public interface EstudianteService {
     public Estudiante actualizar(Estudiante estudiante);
     public Optional<Estudiante> listarPorId(Integer id);
     public void eliminarPorId(Integer id);
+
+    String obtenerNombrePorId(Integer id);
 }

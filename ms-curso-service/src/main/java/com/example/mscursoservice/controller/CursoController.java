@@ -35,6 +35,12 @@ public class CursoController {
         return ResponseEntity.ok().body(cursoService.listarPorId(id).orElseThrow(() -> new RuntimeException("Curso no encontrado con ID " + id)));
     }
 
+    @GetMapping("/{id}/nombre")
+    public ResponseEntity<String> obtenerNombreCurso(@PathVariable Integer id) {
+        String nombreCurso = cursoService.obtenerNombrePorId(id);
+        return ResponseEntity.ok(nombreCurso);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable Integer id) {
         cursoService.eliminarPorId(id);

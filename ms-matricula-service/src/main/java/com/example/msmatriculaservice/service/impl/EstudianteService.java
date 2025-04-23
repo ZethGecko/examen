@@ -27,4 +27,17 @@ public class EstudianteService {
 
         throw new RuntimeException("No se encontraron instancias del servicio MS-ALUMNOS en Eureka");
     }
+
+    public String obtenerNombreEstudiantePorId(Integer estudianteId) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-ALUMNOS");
+
+        if (serviceInstance != null) {
+            String baseUrl = serviceInstance.getUri().toString();
+            String url = baseUrl + "/alumnos/" + estudianteId + "/nombre"; // Asegúrate de que este endpoint exista
+            return restTemplate.getForObject(url, String.class);
+        }
+
+        throw new RuntimeException("No se encontraron instancias del servicio MS-ALUMNOS en Eureka");
+    }
+
 }

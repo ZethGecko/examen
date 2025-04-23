@@ -38,6 +38,11 @@ public class EstudianteController {
     public ResponseEntity<Estudiante> listById(@PathVariable(required = true) Integer id){
         return ResponseEntity.ok().body(estudianteService.listarPorId(id).get());
     }
+    @GetMapping("/{id}/nombre")
+    public ResponseEntity<String> obtenerNombreEstudiante(@PathVariable Integer id) {
+        String nombreEstudiante = estudianteService.obtenerNombrePorId(id);
+        return ResponseEntity.ok(nombreEstudiante);
+    }
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable(required = true) Integer id){
         estudianteService.eliminarPorId(id);

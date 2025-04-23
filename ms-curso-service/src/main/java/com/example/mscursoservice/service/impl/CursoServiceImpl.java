@@ -54,4 +54,12 @@ public class CursoServiceImpl implements CursoService {
         return cursoRepository.save(curso);
     }
 
+    @Override
+    public String obtenerNombrePorId(Integer id) {
+        Cursos curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado con ID: " + id));
+        return curso.getNombre();
+    }
+
+
 }

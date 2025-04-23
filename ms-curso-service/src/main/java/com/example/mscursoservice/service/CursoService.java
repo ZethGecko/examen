@@ -12,4 +12,6 @@ public interface CursoService {
     public Optional<Cursos> listarPorId(Integer id);
     public void eliminarPorId(Integer id);
 
+
+    String obtenerNombrePorId(Integer id);
 }

@@ -1,5 +1,6 @@
 package com.example.msmatriculaservice.controller;
 
+import com.example.msmatriculaservice.dto.MatriculaDetalle;
 import com.example.msmatriculaservice.entity.Matricula;
 import com.example.msmatriculaservice.service.MatriculaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,11 @@ public class MatriculaController {
         matriculaService.eliminarPorId(id);
         return "Eliminacion Correcta";
     }
+
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<MatriculaDetalle> obtenerDetallePorId(@PathVariable Integer id) {
+        MatriculaDetalle detalle = matriculaService.obtenerDetalleMatriculaPorId(id);
+        return ResponseEntity.ok(detalle);
+    }
+
 }

@@ -48,4 +48,11 @@ public class EstudianteServiceImpl implements EstudianteService {
         estudianteRepository.deleteById(id);
     }
 
+    @Override
+    public String obtenerNombrePorId(Integer id) {
+        Estudiante estudiante = estudianteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + id));
+        return estudiante.getNombre();
+    }
+
 }

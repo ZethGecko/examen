@@ -27,4 +27,17 @@ public class CursoService {
 
         throw new RuntimeException("No se encontraron instancias del servicio MS-CURSOS en Eureka");
     }
+
+    public String obtenerNombreCursoPorId(Integer cursoId) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-CURSOS");
+
+        if (serviceInstance != null) {
+            String baseUrl = serviceInstance.getUri().toString();
+            String url = baseUrl + "/cursos/" + cursoId + "/nombre"; // Asegúrate de que este endpoint exista
+            return restTemplate.getForObject(url, String.class);
+        }
+
+        throw new RuntimeException("No se encontraron instancias del servicio MS-CURSOS en Eureka");
+    }
+
 }
