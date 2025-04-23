@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,47 @@ public class MatriculaServiceImpl implements MatriculaService {
     public List<Matricula> listar() {
         return matriculaRepository.findAll();
     }
+
+    @Override
+    public List<MatriculaDetalle> obtenerReporteMatriculas() {
+        // Obtener todas las matrículas
+        List<Matricula> matriculas = matriculaRepository.findAll();
+
+        // Crear una lista de MatriculaDetalle
+        List<MatriculaDetalle> reporte = new ArrayList<>();
+
+        // Enriquecer cada matrícula con los nombres del curso y del estudiante
+        for (Matricula matricula : matriculas) {
+            String cursoNombre = "Curso no disponible"; // Valor por defecto
+            String alumnoNombre = "Estudiante no disponible"; // Valor por defecto
+
+            try {
+                cursoNombre = cursoService.obtenerNombreCursoPorId(matricula.getCursoId());
+            } catch (Exception e) {
+                System.err.println("Error al obtener nombre del curso para ID: " + matricula.getCursoId() + ". " + e.getMessage());
+            }
+
+            try {
+                alumnoNombre = estudianteService.obtenerNombreEstudiantePorId(matricula.getAlumnoId());
+            } catch (Exception e) {
+                System.err.println("Error al obtener nombre del estudiante para ID: " + matricula.getAlumnoId() + ". " + e.getMessage());
+            }
+
+            // Crear el DTO y agregarlo al reporte
+            MatriculaDetalle detalle = new MatriculaDetalle();
+            detalle.setId(matricula.getId());
+            detalle.setEstado(matricula.getEstado());
+            detalle.setCursoNombre(cursoNombre);
+            detalle.setAlumnoNombre(alumnoNombre);
+            detalle.setCiclo(matricula.getCiclo());
+            detalle.setFechaMatricula(matricula.getFechaMatricula());
+
+            reporte.add(detalle);
+        }
+
+        return reporte;
+    }
+
 
     @Override
     public Matricula guardar(Matricula matricula) {

@@ -14,4 +14,6 @@ public interface MatriculaService {
     public void eliminarPorId(Integer id);
 
     MatriculaDetalle obtenerDetalleMatriculaPorId(Integer matriculaId);
+
+    List<MatriculaDetalle> obtenerReporteMatriculas();
 }

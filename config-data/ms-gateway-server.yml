@@ -43,4 +43,4 @@ spring:
         - id: ms-matricula-service
           uri: lb://ms-matricula-service
           predicates:
-            - Path=/matriculas/**, /ventas/**
+            - Path=/matriculas/**

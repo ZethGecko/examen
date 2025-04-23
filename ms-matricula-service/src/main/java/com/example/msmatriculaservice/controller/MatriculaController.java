@@ -31,6 +31,12 @@ public class MatriculaController {
     public ResponseEntity<Matricula> listById(@PathVariable(required = true) Integer id){
         return ResponseEntity.ok().body(matriculaService.listarPorId(id).get());
     }
+    @GetMapping("/reporte")
+    public ResponseEntity<List<MatriculaDetalle>> generarReporte() {
+        List<MatriculaDetalle> reporte = matriculaService.obtenerReporteMatriculas();
+        return ResponseEntity.ok(reporte);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable(required = true) Integer id){
         matriculaService.eliminarPorId(id);
