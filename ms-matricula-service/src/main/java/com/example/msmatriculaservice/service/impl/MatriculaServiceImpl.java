@@ -4,6 +4,7 @@ import com.example.msmatriculaservice.dto.Curso;
 import com.example.msmatriculaservice.dto.Estudiante;
 import com.example.msmatriculaservice.entity.Matricula;
 import com.example.msmatriculaservice.repository.MatriculaRepository;
+import com.example.msmatriculaservice.service.EstudianteService;
 import com.example.msmatriculaservice.service.MatriculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

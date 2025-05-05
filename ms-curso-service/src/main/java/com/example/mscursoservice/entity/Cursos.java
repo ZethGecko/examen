@@ -70,6 +70,9 @@ public class Cursos {
                 '}';
     }
 
+    public Cursos() {
+    }
+
     public Cursos(Integer id, String nombre, String horarios, Integer capacidad, Integer inscritos, Integer codigo, String ciclo, LocalDateTime fechaCreacion) {
         this.id = id;
         this.nombre = nombre;
