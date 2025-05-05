@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface MatriculaRepository extends JpaRepository<Matricula, Integer> {
-    Optional<Object> findByEstado(String estado);
+public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
+    Optional<Matricula> findById(Integer id);
 }

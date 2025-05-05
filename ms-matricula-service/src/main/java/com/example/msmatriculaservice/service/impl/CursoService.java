@@ -1,6 +1,6 @@
 package com.example.msmatriculaservice.service.impl;
 
-import com.example.msmatriculaservice.dto.Cursos;
+import com.example.msmatriculaservice.dto.Curso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -15,29 +15,20 @@ public class CursoService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public boolean verificarCapacidad(Integer cursoId) {
-        // Obtener la instancia del microservicio registrado en Eureka
-        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-CURSOS");
+    public void decrementarInscritos(Integer cursoId) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("ms-curso-service");
 
         if (serviceInstance != null) {
             String baseUrl = serviceInstance.getUri().toString();
-            String url = baseUrl + "/cursos/" + cursoId + "/verificar-capacidad"; // Endpoint de verificación de capacidad
-            return restTemplate.getForObject(url, Boolean.class);
+            String url = baseUrl + "/cursos/" + cursoId + "/decrementar-inscritos";
+
+            try {
+                restTemplate.postForObject(url, null, Void.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al llamar a decrementar inscritos en el curso con ID " + cursoId + ": " + e.getMessage());
+            }
+        } else {
+            throw new RuntimeException("No se encontraron instancias del servicio ms-curso-service en Eureka.");
         }
-
-        throw new RuntimeException("No se encontraron instancias del servicio MS-CURSOS en Eureka");
     }
-
-    public String obtenerNombreCursoPorId(Integer cursoId) {
-        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-CURSOS");
-
-        if (serviceInstance != null) {
-            String baseUrl = serviceInstance.getUri().toString();
-            String url = baseUrl + "/cursos/" + cursoId + "/nombre"; // Asegúrate de que este endpoint exista
-            return restTemplate.getForObject(url, String.class);
-        }
-
-        throw new RuntimeException("No se encontraron instancias del servicio MS-CURSOS en Eureka");
-    }
-
 }

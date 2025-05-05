@@ -1,6 +1,7 @@
 package com.example.msmatriculaservice.service.impl;
 
-import com.example.msmatriculaservice.dto.MatriculaDetalle;
+import com.example.msmatriculaservice.dto.Curso;
+import com.example.msmatriculaservice.dto.Estudiante;
 import com.example.msmatriculaservice.entity.Matricula;
 import com.example.msmatriculaservice.repository.MatriculaRepository;
 import com.example.msmatriculaservice.service.MatriculaService;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,65 +29,28 @@ public class MatriculaServiceImpl implements MatriculaService {
     }
 
     @Override
-    public List<MatriculaDetalle> obtenerReporteMatriculas() {
-        // Obtener todas las matrículas
-        List<Matricula> matriculas = matriculaRepository.findAll();
-
-        // Crear una lista de MatriculaDetalle
-        List<MatriculaDetalle> reporte = new ArrayList<>();
-
-        // Enriquecer cada matrícula con los nombres del curso y del estudiante
-        for (Matricula matricula : matriculas) {
-            String cursoNombre = "Curso no disponible"; // Valor por defecto
-            String alumnoNombre = "Estudiante no disponible"; // Valor por defecto
-
-            try {
-                cursoNombre = cursoService.obtenerNombreCursoPorId(matricula.getCursoId());
-            } catch (Exception e) {
-                System.err.println("Error al obtener nombre del curso para ID: " + matricula.getCursoId() + ". " + e.getMessage());
-            }
-
-            try {
-                alumnoNombre = estudianteService.obtenerNombreEstudiantePorId(matricula.getAlumnoId());
-            } catch (Exception e) {
-                System.err.println("Error al obtener nombre del estudiante para ID: " + matricula.getAlumnoId() + ". " + e.getMessage());
-            }
-
-            // Crear el DTO y agregarlo al reporte
-            MatriculaDetalle detalle = new MatriculaDetalle();
-            detalle.setId(matricula.getId());
-            detalle.setEstado(matricula.getEstado());
-            detalle.setCursoNombre(cursoNombre);
-            detalle.setAlumnoNombre(alumnoNombre);
-            detalle.setCiclo(matricula.getCiclo());
-            detalle.setFechaMatricula(matricula.getFechaMatricula());
-
-            reporte.add(detalle);
-        }
-
-        return reporte;
-    }
-
-
-    @Override
     public Matricula guardar(Matricula matricula) {
-        // Verificar la capacidad del curso a través de `cursoService`
-        boolean capacidadDisponible = cursoService.verificarCapacidad(matricula.getCursoId());
-        if (!capacidadDisponible) {
-            throw new RuntimeException("El curso con ID " + matricula.getCursoId() + " ha alcanzado su capacidad máxima.");
-        }
-
-        // Verificar el estado del estudiante a través de `estudianteService`
-        boolean estudianteActivo = estudianteService.verificarEstado(matricula.getAlumnoId());
-        if (!estudianteActivo) {
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(matricula.getAlumnoId());
+        if (estudiante == null || !"Activo".equals(estudiante.getEstado())) {
             throw new RuntimeException("El estudiante con ID " + matricula.getAlumnoId() + " no está activo.");
         }
 
-        // Registrar la matrícula
+        Curso curso = cursoService.obtenerCursoPorId(matricula.getCursoId());
+        if (curso == null || curso.getInscritos() >= curso.getCapacidad()) {
+            throw new RuntimeException("El curso con ID " + matricula.getCursoId() + " ha alcanzado su capacidad máxima.");
+        }
+
+        matricula.setCursoNombre(curso.getNombre());
+        matricula.setAlumnoNombre(estudiante.getNombre());
         matricula.setFechaMatricula(LocalDateTime.now());
-        matricula.setEstado("Registrada"); // Estado inicial
+        matricula.setEstado("Registrada");
+
+        cursoService.decrementarInscritos(matricula.getCursoId());
+
         return matriculaRepository.save(matricula);
     }
+
+
     @Override
     public Matricula actualizar(Matricula matricula) {
         return matriculaRepository.save(matricula);
@@ -100,29 +63,12 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public void eliminarPorId(Integer id) {
-        matriculaRepository.deleteById(id);
+        Matricula matricula = matriculaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Matrícula no encontrada con ID: " + id));
+
+        // Disminuir el número de inscritos en el curso
+        cursoService.decrementarInscritos(matricula.getCursoId());
+
+        matriculaRepository.deleteById(Long.valueOf(id));
     }
-
-    @Override
-    public MatriculaDetalle obtenerDetalleMatriculaPorId(Integer matriculaId) {
-        Matricula matricula = matriculaRepository.findById(matriculaId)
-                .orElseThrow(() -> new RuntimeException("No se encontró matrícula con ID: " + matriculaId));
-
-        // Obtener el nombre del curso desde el microservicio de cursos
-        String cursoNombre = cursoService.obtenerNombreCursoPorId(matricula.getCursoId());
-
-        // Obtener el nombre del estudiante desde el microservicio de estudiantes
-        String alumnoNombre = estudianteService.obtenerNombreEstudiantePorId(matricula.getAlumnoId());
-
-        // Crear y devolver el DTO con los datos enriquecidos
-        MatriculaDetalle detalle = new MatriculaDetalle();
-        detalle.setId(matricula.getId());
-        detalle.setEstado(matricula.getEstado());
-        detalle.setCursoNombre(cursoNombre);
-        detalle.setAlumnoNombre(alumnoNombre);
-        detalle.setCiclo(matricula.getCiclo());
-        detalle.setFechaMatricula(matricula.getFechaMatricula());
-        return detalle;
-    }
-
 }

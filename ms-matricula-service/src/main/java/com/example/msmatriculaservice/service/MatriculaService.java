@@ -1,6 +1,5 @@
 package com.example.msmatriculaservice.service;
 
-import com.example.msmatriculaservice.dto.MatriculaDetalle;
 import com.example.msmatriculaservice.entity.Matricula;
 
 import java.util.List;
@@ -12,8 +11,4 @@ public interface MatriculaService {
     public Matricula actualizar(Matricula matricula);
     public Optional<Matricula> listarPorId(Integer id);
     public void eliminarPorId(Integer id);
-
-    MatriculaDetalle obtenerDetalleMatriculaPorId(Integer matriculaId);
-
-    List<MatriculaDetalle> obtenerReporteMatriculas();
 }

@@ -18,11 +18,11 @@ public class CursoSeeder {
     public void init() {
         // Verificar y agregar datos iniciales solo si no existen registros con los IDs especificados
         if (!cursoRepository.existsById(1)) {
-            cursoRepository.save(new Cursos(1, "Matemáticas", "Lunes a Viernes 9-11AM", "10", 0, 1001, "Ciclo 1", LocalDateTime.now()));
+            cursoRepository.save(new Cursos(1, "Matemáticas", "Lunes a Viernes 9-11AM", "2", 0, 1001, "Ciclo 1", LocalDateTime.now()));
         }
 
         if (!cursoRepository.existsById(2)) {
-            cursoRepository.save(new Cursos(2, "Física", "Martes y Jueves 2-4PM", "10", 0, 1002, "Ciclo 2", LocalDateTime.now()));
+            cursoRepository.save(new Cursos(2, "Física", "Martes y Jueves 2-4PM", "3", 0, 1002, "Ciclo 2", LocalDateTime.now()));
         }
 
         if (!cursoRepository.existsById(3)) {

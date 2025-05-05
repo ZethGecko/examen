@@ -14,8 +14,9 @@ public class Matricula {
     private Integer id;
     private String estado;
     private Integer cursoId; // Foreign key simulada del curso
+    private String cursoNombre;
     private Integer alumnoId; // Foreign key simulada del alumno
-
+    private String alumnoNombre;
     private Integer ciclo; // Ciclo de la matrícula
     private LocalDateTime fechaMatricula; // Fecha de matrícula
 
@@ -43,12 +44,28 @@ public class Matricula {
         this.cursoId = cursoId;
     }
 
+    public String getCursoNombre() {
+        return cursoNombre;
+    }
+
+    public void setCursoNombre(String cursoNombre) {
+        this.cursoNombre = cursoNombre;
+    }
+
     public Integer getAlumnoId() {
         return alumnoId;
     }
 
     public void setAlumnoId(Integer alumnoId) {
         this.alumnoId = alumnoId;
+    }
+
+    public String getAlumnoNombre() {
+        return alumnoNombre;
+    }
+
+    public void setAlumnoNombre(String alumnoNombre) {
+        this.alumnoNombre = alumnoNombre;
     }
 
     public Integer getCiclo() {
@@ -67,15 +84,6 @@ public class Matricula {
         this.fechaMatricula = fechaMatricula;
     }
 
-    public Matricula(Integer id, String estado, Integer cursoId, Integer alumnoId, Integer ciclo, LocalDateTime fechaMatricula) {
-        this.id = id;
-        this.estado = estado;
-        this.cursoId = cursoId;
-        this.alumnoId = alumnoId;
-        this.ciclo = ciclo;
-        this.fechaMatricula = fechaMatricula;
-    }
-
     public Matricula() {
     }
 
@@ -85,9 +93,22 @@ public class Matricula {
                 "id=" + id +
                 ", estado='" + estado + '\'' +
                 ", cursoId=" + cursoId +
+                ", cursoNombre='" + cursoNombre + '\'' +
                 ", alumnoId=" + alumnoId +
+                ", alumnoNombre='" + alumnoNombre + '\'' +
                 ", ciclo=" + ciclo +
                 ", fechaMatricula=" + fechaMatricula +
                 '}';
+    }
+
+    public Matricula(Integer id, String estado, Integer cursoId, String cursoNombre, Integer alumnoId, String alumnoNombre, Integer ciclo, LocalDateTime fechaMatricula) {
+        this.id = id;
+        this.estado = estado;
+        this.cursoId = cursoId;
+        this.cursoNombre = cursoNombre;
+        this.alumnoId = alumnoId;
+        this.alumnoNombre = alumnoNombre;
+        this.ciclo = ciclo;
+        this.fechaMatricula = fechaMatricula;
     }
 }

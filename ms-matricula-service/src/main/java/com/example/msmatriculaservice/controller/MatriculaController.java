@@ -1,6 +1,5 @@
 package com.example.msmatriculaservice.controller;
 
-import com.example.msmatriculaservice.dto.MatriculaDetalle;
 import com.example.msmatriculaservice.entity.Matricula;
 import com.example.msmatriculaservice.service.MatriculaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/matriculas")
@@ -31,22 +31,9 @@ public class MatriculaController {
     public ResponseEntity<Matricula> listById(@PathVariable(required = true) Integer id){
         return ResponseEntity.ok().body(matriculaService.listarPorId(id).get());
     }
-    @GetMapping("/reporte")
-    public ResponseEntity<List<MatriculaDetalle>> generarReporte() {
-        List<MatriculaDetalle> reporte = matriculaService.obtenerReporteMatriculas();
-        return ResponseEntity.ok(reporte);
-    }
-
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable(required = true) Integer id){
         matriculaService.eliminarPorId(id);
         return "Eliminacion Correcta";
     }
-
-    @GetMapping("/{id}/detalle")
-    public ResponseEntity<MatriculaDetalle> obtenerDetallePorId(@PathVariable Integer id) {
-        MatriculaDetalle detalle = matriculaService.obtenerDetalleMatriculaPorId(id);
-        return ResponseEntity.ok(detalle);
-    }
-
 }

@@ -15,29 +15,20 @@ public class EstudianteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public boolean verificarEstado(Integer alumnoId) {
-        // Obtener la instancia del microservicio registrado en Eureka
-        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-ALUMNOS");
+    public Estudiante obtenerEstudiantePorId(Integer alumnoId) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("ms-estudiante-service");
 
         if (serviceInstance != null) {
             String baseUrl = serviceInstance.getUri().toString();
-            String url = baseUrl + "/alumnos/" + alumnoId + "/estado"; // Endpoint de verificación de estado del alumno
-            return restTemplate.getForObject(url, Boolean.class);
+            String url = baseUrl + "/alumnos/" + alumnoId;
+
+            try {
+                return restTemplate.getForObject(url, Estudiante.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al obtener estudiante con ID " + alumnoId + ": " + e.getMessage());
+            }
         }
 
-        throw new RuntimeException("No se encontraron instancias del servicio MS-ALUMNOS en Eureka");
+        throw new RuntimeException("No se encontraron instancias del servicio ms-estudiante-service en Eureka.");
     }
-
-    public String obtenerNombreEstudiantePorId(Integer estudianteId) {
-        ServiceInstance serviceInstance = loadBalancerClient.choose("MS-ALUMNOS");
-
-        if (serviceInstance != null) {
-            String baseUrl = serviceInstance.getUri().toString();
-            String url = baseUrl + "/alumnos/" + estudianteId + "/nombre"; // Asegúrate de que este endpoint exista
-            return restTemplate.getForObject(url, String.class);
-        }
-
-        throw new RuntimeException("No se encontraron instancias del servicio MS-ALUMNOS en Eureka");
-    }
-
 }

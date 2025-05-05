@@ -1,9 +1,6 @@
 package com.example.mscursoservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +9,6 @@ public class Cursos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String nombre;
     private String horarios;
     private String capacidad; // Capacidad máxima del curso
@@ -85,17 +81,6 @@ public class Cursos {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Cursos(Integer id, String nombre, String horarios, String capacidad, Integer inscritos, Integer codigo, String ciclo, LocalDateTime fechaCreacion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.horarios = horarios;
-        this.capacidad = capacidad;
-        this.inscritos = inscritos;
-        this.codigo = codigo;
-        this.ciclo = ciclo;
-        this.fechaCreacion = fechaCreacion;
-    }
-
     public Cursos() {
     }
 
@@ -111,5 +96,16 @@ public class Cursos {
                 ", ciclo='" + ciclo + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 '}';
+    }
+
+    public Cursos(Integer id, String nombre, String horarios, String capacidad, Integer inscritos, Integer codigo, String ciclo, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.horarios = horarios;
+        this.capacidad = capacidad;
+        this.inscritos = inscritos;
+        this.codigo = codigo;
+        this.ciclo = ciclo;
+        this.fechaCreacion = fechaCreacion;
     }
 }
