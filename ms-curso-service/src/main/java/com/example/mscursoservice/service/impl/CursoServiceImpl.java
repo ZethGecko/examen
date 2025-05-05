@@ -42,17 +42,21 @@ public class CursoServiceImpl implements CursoService {
         Cursos curso = cursoRepository.findById(cursoId)
                 .orElseThrow(() -> new RuntimeException("Curso no encontrado con ID " + cursoId));
 
-        int capacidadMaxima = Integer.parseInt(curso.getCapacidad()); // Convertir la capacidad de String a int
+        // Cambiar curso.getCapacida() por curso.getCapacidad()
+        int capacidadMaxima = curso.getCapacidad(); // No es necesario convertirlo de String a int
+
         if (curso.getInscritos() >= capacidadMaxima) {
             throw new RuntimeException("El curso '" + curso.getNombre() + "' ha alcanzado su capacidad máxima.");
         }
 
-        // Incrementar el número de inscritos
+        // Incrementar el número de inscritos y reducir la capacidad del curso
         curso.setInscritos(curso.getInscritos() + 1);
+        curso.setCapacidad(curso.getCapacidad() - 1);
 
         // Guardar los cambios en la base de datos
         return cursoRepository.save(curso);
     }
+
 
     @Override
     public String obtenerNombrePorId(Integer id) {

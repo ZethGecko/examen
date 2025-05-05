@@ -1,6 +1,7 @@
 package com.example.mscursoservice.controller;
 
 import com.example.mscursoservice.entity.Cursos;
+import com.example.mscursoservice.repository.CursoRepository;
 import com.example.mscursoservice.service.CursoService;
 import com.example.mscursoservice.service.impl.CursoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.List;
 public class CursoController {
     @Autowired
     private CursoService cursoService;
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @GetMapping()
     public ResponseEntity<List<Cursos>> list() {
@@ -56,5 +59,29 @@ public class CursoController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/{id}/reducir-capacidad")
+    public ResponseEntity<String> reducirCapacidad(@PathVariable Integer id) {
+        Cursos curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado con ID: " + id));
+
+        if (curso.getCapacidad() > 0) {
+            curso.setCapacidad(curso.getCapacidad() - 1);
+            cursoRepository.save(curso);
+            return ResponseEntity.ok("Capacidad reducida a " + curso.getCapacidad());
+        } else {
+            return ResponseEntity.badRequest().body("El curso ya ha alcanzado su capacidad máxima.");
+        }
+    }
+
+    @PutMapping("/{id}/aumentar-capacidad")
+    public ResponseEntity<String> aumentarCapacidad(@PathVariable Integer id) {
+        Cursos curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado con ID: " + id));
+
+        curso.setCapacidad(curso.getCapacidad() + 1);
+        cursoRepository.save(curso);
+        return ResponseEntity.ok("Capacidad aumentada a " + curso.getCapacidad());
     }
 }

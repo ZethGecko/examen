@@ -36,16 +36,18 @@ public class MatriculaServiceImpl implements MatriculaService {
         }
 
         Curso curso = cursoService.obtenerCursoPorId(matricula.getCursoId());
-        if (curso == null || curso.getInscritos() >= curso.getCapacidad()) {
-            throw new RuntimeException("El curso con ID " + matricula.getCursoId() + " ha alcanzado su capacidad máxima.");
+        if (curso == null || curso.getCapacidad() <= 0) {
+            throw new RuntimeException("El curso con ID " + matricula.getCursoId() + " ya ha alcanzado su capacidad máxima.");
         }
 
+        // Registrar la matrícula
         matricula.setCursoNombre(curso.getNombre());
         matricula.setAlumnoNombre(estudiante.getNombre());
         matricula.setFechaMatricula(LocalDateTime.now());
         matricula.setEstado("Registrada");
 
-        cursoService.decrementarInscritos(matricula.getCursoId());
+        // Reducir la capacidad del curso después de la inscripción
+        cursoService.reducirCapacidadCurso(matricula.getCursoId());
 
         return matriculaRepository.save(matricula);
     }
@@ -66,8 +68,8 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = matriculaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Matrícula no encontrada con ID: " + id));
 
-        // Disminuir el número de inscritos en el curso
-        cursoService.decrementarInscritos(matricula.getCursoId());
+        // Restaurar la capacidad del curso
+        cursoService.aumentarCapacidadCurso(matricula.getCursoId());
 
         matriculaRepository.deleteById(Long.valueOf(id));
     }

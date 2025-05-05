@@ -16,27 +16,21 @@ public class CursoSeeder {
 
     @PostConstruct
     public void init() {
-        // Verificar y agregar datos iniciales solo si no existen registros con los IDs especificados
-        if (!cursoRepository.existsById(1)) {
-            cursoRepository.save(new Cursos(1, "Matemáticas", "Lunes a Viernes 9-11AM", "2", 0, 1001, "Ciclo 1", LocalDateTime.now()));
-        }
+        try {
+            // Solo ejecutar si la base de datos está vacía
+            if (cursoRepository.count() == 0) {
+                cursoRepository.save(new Cursos(null, "Matemáticas", "Lunes a Viernes 9-11AM", 2, 0, 1001, "Ciclo 1", LocalDateTime.now()));
+                cursoRepository.save(new Cursos(null, "Física", "Martes y Jueves 2-4PM", 3, 0, 1002, "Ciclo 2", LocalDateTime.now()));
+                cursoRepository.save(new Cursos(null, "Química", "Lunes y Miércoles 11-1PM", 10, 0, 1003, "Ciclo 3", LocalDateTime.now()));
+                cursoRepository.save(new Cursos(null, "Programación", "Viernes 3-5PM", 10, 0, 1004, "Ciclo 4", LocalDateTime.now()));
+                cursoRepository.save(new Cursos(null, "Historia", "Sábado 10-12PM", 10, 0, 1005, "Ciclo 5", LocalDateTime.now()));
 
-        if (!cursoRepository.existsById(2)) {
-            cursoRepository.save(new Cursos(2, "Física", "Martes y Jueves 2-4PM", "3", 0, 1002, "Ciclo 2", LocalDateTime.now()));
+                System.out.println("Seeder ejecutado: datos de cursos inicializados correctamente.");
+            } else {
+                System.out.println("Seeder omitido: ya existen datos en la tabla cursos.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error inicializando CursoSeeder: " + e.getMessage(), e);
         }
-
-        if (!cursoRepository.existsById(3)) {
-            cursoRepository.save(new Cursos(3, "Química", "Lunes y Miércoles 11-1PM", "10", 0, 1003, "Ciclo 3", LocalDateTime.now()));
-        }
-
-        if (!cursoRepository.existsById(4)) {
-            cursoRepository.save(new Cursos(4, "Programación", "Viernes 3-5PM", "10", 0, 1004, "Ciclo 4", LocalDateTime.now()));
-        }
-
-        if (!cursoRepository.existsById(5)) {
-            cursoRepository.save(new Cursos(5, "Historia", "Sábado 10-12PM", "10", 0, 1005, "Ciclo 5", LocalDateTime.now()));
-        }
-
-        System.out.println("Seeder ejecutado: datos de cursos inicializados correctamente.");
     }
 }
