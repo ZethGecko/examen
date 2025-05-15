@@ -44,3 +44,8 @@ spring:
           uri: lb://ms-matricula-service
           predicates:
             - Path=/matriculas/**
+            -
+        - id: ms-auth-service
+          uri: lb://ms-auth-service
+          predicates:
+            - Path=/auth/**
