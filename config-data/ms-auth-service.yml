@@ -9,10 +9,11 @@ spring:
     show-sql: true
     # CONEXION A BASE DE DATOS
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mysqldb
-    username: root
-    password: ""
+    datasource:
+      url: jdbc:mysql://localhost:3306/mysqldb
+      username: root
+      password: ""
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
   client:
