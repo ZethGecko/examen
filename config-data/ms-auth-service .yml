@@ -10,7 +10,7 @@ spring:
     # CONEXION A BASE DE DATOS
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mysqldb
+    url: jdbc:mysql://localhost:3306/seguridad
     username: root
     password: ""
 
