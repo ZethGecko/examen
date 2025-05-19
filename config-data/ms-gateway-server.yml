@@ -13,8 +13,6 @@ eureka:
 spring:
   cloud:
     gateway:
-
-
       discovery:
         locator:
           enable: true
@@ -44,6 +42,9 @@ spring:
           uri: lb://ms-matricula-service
           predicates:
             - Path=/matriculas/**
+          filters:
+            - AuthFilter
+
 
         - id: ms-auth-service
           uri: lb://ms-auth-service
