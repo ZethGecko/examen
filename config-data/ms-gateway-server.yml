@@ -37,6 +37,8 @@ spring:
           uri: lb://ms-curso-service
           predicates:
             - Path=/cursos/**
+          filters:
+            - AuthFilter
 
         - id: ms-matricula-service
           uri: lb://ms-matricula-service

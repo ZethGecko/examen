@@ -1,5 +1,4 @@
-package com.example.msgatewayservice.dto;
-
+package com.example.msgatewayserver.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
